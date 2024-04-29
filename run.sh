@@ -1,0 +1,1 @@
+JOB_NAME=run6 python3 run.py
