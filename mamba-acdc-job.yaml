@@ -45,7 +45,7 @@ spec:
           - name: PATH
             value: "/opt/conda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/dev/.local/bin:/usr/local/cuda-12.0/bin/"
         command:
-          - sudo /home/dev/mamba-acdc/run.sh
+          - /home/dev/mamba-acdc/run.sh
         resources:
           # Request CPUs, limit memory and GPUs.
           requests:
