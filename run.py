@@ -53,7 +53,7 @@ model = HookedMamba.from_pretrained(model_path, device='cuda')
 from acdc.data.ioi import ioi_data_generator, ABC_TEMPLATES, get_all_single_name_abc_patching_formats
 from acdc.data.utils import generate_dataset
 
-num_patching_pairs = 200
+num_patching_pairs = 20
 seed = 27
 valid_seed = 28
 constrain_to_answers = True
@@ -280,8 +280,8 @@ from functools import partial
 #print(f"normalized diff {normalized_diff}")
 cfg = ACDCConfig(
     ckpt_directory = wandb_id,
-    thresh = 0.00001,
-    rollback_thresh = 0.00001,
+    thresh = 0.001,
+    rollback_thresh = 0.001,
     metric=normalized_logit_diff_metric,
     # extra inference args
     model_kwargs=model_kwargs,
@@ -327,7 +327,7 @@ try:
     wandb.init(
         project="mamba-acdc",
         config=cfg,
-        name=job_name_text.replace(".txt", ""),
+        name=job_name_text.replace(".txt", "") + f' thresh={cfg.thresh} rollback_thresh={cfg.rollback_thresh}',
         resume=wandb_resume,
         id=wandb_id,
     )
