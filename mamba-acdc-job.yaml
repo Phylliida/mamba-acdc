@@ -39,7 +39,7 @@ spec:
                 - "true"
       containers:
       - name: sae-trainer
-        image: ghcr.io/alignmentresearch/flamingo-devbox:latest
+        image: ghcr.io/phylliida/mamba-acdc:latest
         workingDir: /home/dev/mamba-acdc
         env:
           - name: PATH
