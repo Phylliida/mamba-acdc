@@ -1,4 +1,4 @@
-ARG PYTORCH_CUDA_VERSION=2.2.1-cuda12.1-cudnn8
+ARG PYTORCH_CUDA_VERSION=2.0.0-cuda11.7-cudnn8
 
 FROM pytorch/pytorch:${PYTORCH_CUDA_VERSION}-devel as envpool-environment
 ENV DEBIAN_FRONTEND=noninteractive
@@ -46,7 +46,7 @@ RUN make bazel-build
 FROM envpool-environment as envpool
 RUN make bazel-release
 
-FROM pytorch/pytorch:${PYTORCH_CUDA_VERSION}-runtime as main-pre-pip
+FROM pytorch/pytorch:${PYTORCH_CUDA_VERSION}-devel as main-pre-pip
 
 ARG USERID=1001
 ARG GROUPID=1001
@@ -58,13 +58,13 @@ RUN apt-get update -q \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
     # essential for running. GCC is for Torch triton
-    git git-lfs tini build-essential \
+    git git-lfs build-essential \
     # essential for testing
     libgl-dev libglib2.0-0 zip make \
     # devbox niceties
     curl vim tmux less sudo \
     # CircleCI
-    ssh \
+    ssh rsync git vim graphviz xdg-utils \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -89,7 +89,6 @@ FROM main-pre-pip as main-pip-tools
 RUN pip install "pip-tools ~=7.4.1"
 
 FROM main-pre-pip as main
-COPY --chown=${USERNAME}:${USERNAME} requirements.txt ./
 # Install all dependencies, which should be explicit in `requirements.txt`
 
 # Copy whole repo and install
@@ -97,7 +96,6 @@ COPY --chown=${USERNAME}:${USERNAME} . .
 RUN pip install packaging && rm -rf "${HOME}/.cache"
 RUN pip install causal-conv1d mamba-ssm wandb transformer-lens mamba-lens && rm -rf "${HOME}/.cache"
 
-RUN sudo DEBIAN_FRONTEND=noninteractive apt install -y rsync git vim graphviz xdg-utils
 
 # Default command to run -- may be changed at runtime
 CMD ["/bin/bash"]
