@@ -1,4 +1,5 @@
-FROM pytorch/pytorch as base
+FROM pytorch/pytorch:2.2.0-cuda12.1-cudnn8-devel
+
 
 ARG UID=10000
 ARG GID=101
@@ -13,8 +14,10 @@ RUN apt update && \
     echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # Install some useful packages
-RUN apt update && \
-    apt install -y rsync git vim graphviz xdg-utils
+RUN sudo apt update
+RUN sudo DEBIAN_FRONTEND=noninteractive apt install -y rsync git vim graphviz xdg-utils
+
+RUN pip install causal-conv1d mamba-ssm
 
 # Set the non-root user as the default user
 USER ${USERNAME}
