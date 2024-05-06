@@ -20,7 +20,7 @@ spec:
       volumes:
       - name: working-storage
         persistentVolumeClaim:
-          claimName: devbox-storage-2
+          claimName: job-storage
       # This job does not need the shared NFS, so we can tolerate the lack of a working connection to the NFS server.
       tolerations:
       - key: "nfs_not_working"
