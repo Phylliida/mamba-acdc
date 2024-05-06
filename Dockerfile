@@ -5,23 +5,23 @@ ARG UID=10000
 ARG GID=101
 ARG USERNAME=dev
 
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9A2FD067A2E3EF7B
-# Update the package list, install sudo, create a non-root user, and grant password-less sudo permissions
-RUN  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 605C66F00D6C9793 \
-    0E98404D386FA1D9 648ACFD622F3D138 && apt update && \
-    apt install -y sudo && \
-    addgroup --gid $GID ${USERNAME} && \
-    adduser --uid $UID --gid $GID --disabled-password --gecos "" ${USERNAME} && \
-    usermod -aG sudo ${USERNAME} && \
-    echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+RUN apt-get install sudo
 
+# make python point to the right place
+#RUN rm /bin/python3 && ln -s /opt/conda/bin/python3 /bin/python3
 # Install some useful packages
-RUN sudo apt update
+
+#RUN echo $(whereis python) && echo "bees" && wow
 RUN sudo DEBIAN_FRONTEND=noninteractive apt install -y rsync git vim graphviz xdg-utils
+RUN pip install pip --upgrade
 
-RUN pip install packaging 
+RUN pip3 install --user packaging 
 
-RUN pip install causal-conv1d mamba-ssm 
+RUN pip3 install --user causal-conv1d mamba-ssm wandb transformer-lens mamba-lens
+
+#RUN python -v -c "import wandb" | wow
+
+#RUN cp -r /root/.local/lib/ /opt/conda/lib/python3.10/
 
 # Set the non-root user as the default user
 USER ${USERNAME}
