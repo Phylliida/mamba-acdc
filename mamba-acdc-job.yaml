@@ -8,7 +8,7 @@ metadata:
     kueue.x-k8s.io/queue-name: farai
 spec:
   ttlSecondsAfterFinished: 100
-  backoffLimit: 0  # How many times to try to run the job until giving up
+  backoffLimit: 2  # How many times to try to run the job until giving up
   completions: 1 # Run 5 pods total. This should match the number of sweep commands.
   parallelism: 1 # Run up to 5 pods at a time.
   completionMode: "Indexed" # Give each pod a unique index.
@@ -40,9 +40,10 @@ spec:
       containers:
       - name: sae-trainer
         image: ghcr.io/phylliida/mamba-acdc:latest
-        workingDir: /home/jobs/mamba-acdc
+        workingDir: /home/dev/mamba-acdc
         command:
-          - /home/jobs/mamba-acdc/run.sh
+          - sleep
+          - 1d
         resources:
           # Request CPUs, limit memory and GPUs.
           requests:
@@ -54,5 +55,5 @@ spec:
             nvidia.com/gpu: 1
         volumeMounts:
           - name: working-storage
-            mountPath: /home/jobs
+            mountPath: /home/dev
       restartPolicy: Never
