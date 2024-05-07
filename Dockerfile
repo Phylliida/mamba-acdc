@@ -51,8 +51,8 @@ WORKDIR "/workspace"
 # Copy whole repo and install
 COPY --chown=${USERNAME}:${USERNAME} . .
 RUN pip install packaging && rm -rf "${HOME}/.cache"
-RUN pip install causal-conv1d mamba-ssm wandb transformer-lens mamba-lens git+https://github.com/Phylliida/ACDC.git && rm -rf "${HOME}/.cache"
-
+RUN pip install jupyter causal-conv1d mamba-ssm wandb transformer-lens mamba-lens git+https://github.com/Phylliida/ACDC.git --upgrade && rm -rf "${HOME}/.cache"
+RUN pip install graphviz
 
 # Default command to run -- may be changed at runtime
 CMD ["/bin/bash"]

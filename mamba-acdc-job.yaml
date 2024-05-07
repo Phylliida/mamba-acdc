@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mamba-acdc-job  # use a fixed name
+  name: mamba-acdc-jobw  # use a fixed name
   # generateName: sample-job-   # use a partially random name
   labels:
     kueue.x-k8s.io/queue-name: farai
@@ -16,7 +16,7 @@ spec:
     metadata:
       name: sae-trainer-pod
     spec:
-      priorityClassName: interactive
+      priorityClassName: normal-batch
       volumes:
       - name: working-storage
         persistentVolumeClaim:
@@ -42,8 +42,7 @@ spec:
         image: ghcr.io/phylliida/mamba-acdc:latest
         workingDir: /home/dev/mamba-acdc
         command:
-          - sleep
-          - 1d
+          - /home/dev/mamba-acdc/run.sh
         resources:
           # Request CPUs, limit memory and GPUs.
           requests:
