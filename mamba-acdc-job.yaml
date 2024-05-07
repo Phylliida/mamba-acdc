@@ -2,13 +2,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: mamba-acdc-jobw  # use a fixed name
+  name: mamba-acdc-job  # use a fixed name
   # generateName: sample-job-   # use a partially random name
   labels:
     kueue.x-k8s.io/queue-name: farai
 spec:
   ttlSecondsAfterFinished: 100
-  backoffLimit: 2  # How many times to try to run the job until giving up
+  backoffLimit: 10  # How many times to try to run the job until giving up
   completions: 1 # Run 5 pods total. This should match the number of sweep commands.
   parallelism: 1 # Run up to 5 pods at a time.
   completionMode: "Indexed" # Give each pod a unique index.
