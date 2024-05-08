@@ -599,8 +599,8 @@ for layer in layers:
     ))
 '''
 model_kwargs = {
-    'fast_ssm': True,
-    'fast_conv': True,
+    'fast_ssm': False,
+    'fast_conv': False,
 }
 
 
