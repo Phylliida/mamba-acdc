@@ -181,7 +181,7 @@ def conv_patching_hook(
 
 
 
-
+from functools import partial
 
 
 global storage
