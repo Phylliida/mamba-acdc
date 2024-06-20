@@ -51,8 +51,9 @@ WORKDIR "/workspace"
 # Copy whole repo and install
 COPY --chown=${USERNAME}:${USERNAME} . .
 RUN pip install packaging && rm -rf "${HOME}/.cache"
-RUN pip install jupyter causal-conv1d mamba-ssm wandb transformer-lens mamba-lens git+https://github.com/Phylliida/ACDC.git --upgrade && rm -rf "${HOME}/.cache"
-RUN pip install graphviz
+RUN pip install jupyter graphviz causal-conv1d simple_parsing mamba-ssm wandb transformer-lens mamba-lens git+https://github.com/Phylliida/ACDC.git --upgrade && rm -rf "${HOME}/.cache"
+RUN pip install --index-url https://aiinfra.pkgs.visualstudio.com/PublicPackages/_packaging/Triton-Nightly/pypi/simple/ triton-nightly && rm -rf "${HOME}/.cache"
+RUN pip install numpy==1.26.4 --upgrade && rm -rf "${HOME}/.cache"
 
 # Default command to run -- may be changed at runtime
 CMD ["/bin/bash"]
